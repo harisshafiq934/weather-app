@@ -1,0 +1,133 @@
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+
+}
+
+body{
+    height: 100vh;
+
+}
+
+.container{
+    display: flex;
+    align-items: center;
+}
+
+.main-weather{
+    width: 25%;
+    position: fixed;
+    inset: 0;
+    background: rgb(182, 197, 239);
+    padding: 1rem 2.5rem ;
+
+}
+.weatherIcon{
+background-position: 50% !important;
+background-repeat: no-repeat !important;
+background-size: contain;
+display: block;
+height: 25%;
+margin: 2rem auto;
+
+
+}
+
+.input-group{
+position: relative;
+display: flex;
+align-items: center;
+margin: 2rem 0;
+
+}
+
+.input-group input{
+    background: #f8f8f8;
+    text-transform: capitalize;
+    padding: 1rem;
+    font-size: 15px;
+    border-radius: 4px;
+    width: 100%;
+    outline: none;
+    border: none;
+}
+.input-group .toggle{
+position: absolute;
+right: 45px;
+border: none;
+outline: none;
+cursor: pointer;
+}
+
+.input-group .fa-search{
+    position: absolute;
+    right: 15px;
+    color: rgb(109, 106, 106);
+    cursor: pointer;
+    font-size: 22px;
+}
+
+.weather-detail{
+    width: 75%;
+    position: fixed;
+    inset: 0;
+    margin-left: 25%;
+    padding: 2rem;
+    background:#f6f6f6 ;
+    overflow: auto;
+}
+
+.main-weather .whatfeels,
+.main-weather .description,
+.main-weather .date,
+.main-weather .city{
+    padding: 10px 0;
+}
+.temperature{
+    font-size: 5rem;
+    text-align: center;
+    display: flex;
+    font-weight: 300;
+}
+
+.highlight{
+display: grid;
+grid-template-columns: repeat(3, 350px);
+grid-auto-flow: row;
+row-gap: 1rem;
+column-gap: 10px;
+
+
+}
+
+.forecast{
+    display: grid;
+    grid-template-columns: repeat(4, 260px);
+    grid-auto-flow: row;
+    row-gap: 1rem;
+    column-gap: 10px;
+}
+
+
+.highlight div,
+.forecast div
+{
+    height: 200px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(182, 197, 239);
+    border-radius: 20px;
+    padding: 1rem;
+}
+.highlight i{
+    font-size: 45px;
+}
+
+.sun span{
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
