@@ -17,8 +17,8 @@ const searchLocation = document.getElementById("searchLocation"),
 
  forecast = document.querySelector(".forecast");
 
- WEATHER_API=`https://api.openweathermap.org/data/2.5/weather?appid=0c93b9a1e09d8a89b33a9a635bb87add&q=`;
- WEATHER_DATA=`https://api.openweathermap.org/data/3.0/onecall?appid=0c93b9a1e09d8a89b33a9a635bb87add&exclude=minutely&units=metric&`;
+ var WEATHER_API=`https://api.openweathermap.org/data/2.5/weather?appid=0c93b9a1e09d8a89b33a9a635bb87add&q=`;
+ var WEATHER_DATA=`https://api.openweathermap.org/data/3.0/onecall?appid=0c93b9a1e09d8a89b33a9a635bb87add&exclude=minutely&units=metric&`;
 
 // async function findLocation(){
 //     let location = "London";
@@ -29,68 +29,80 @@ const searchLocation = document.getElementById("searchLocation"),
 
 // }
 
-function findLocation(){
+async function findLocation() {
     forecast.innerHTML = "";
-    fetch(WEATHER_API + searchLocation.value)
-    .then((res) => res.json())
-    .then((data) => {
-       
-        if(data.cod != "" && data.cod != 200){
-            alert(data.message);
+    
+    try {
+        // Fetch location data
+        const locationResponse = await fetch(WEATHER_API + searchLocation.value);
+        const locationData = await locationResponse.json();
+        
+        if (locationData.cod !== "" && locationData.cod !== 200) {
+            alert(locationData.message);
             return;
         }
-        console.log(data);
-        city.innerHTML = data.name + " , " + data.sys.country;
-        weatherIcon.style.background=`url(https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png)`;
-        fetch(WEATHER_DATA + `lon=${data.coord.lon}&lat=${data.coord.lat}`)
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            temperature.innerHTML = data.current.temp;
-            whatfeels.innerHTML = "Feels Like" +data.current.feels_like;
-            description.innerHTML = `<i class="fa-brands fa-cloudversify"></i>` + data.current.weather[0].description;
-            date.innerHTML = new Date().toDateString();
-            humValue.innerHTML = Math.round(data.current.humidity) + "<span>%</span>";
-            windValue.innerHTML = data.current.wind_speed + "<span>m/s</span>";
-            const optionSR = {
-                hour: "numeric",
-                minute: "numeric",
-                hour12: true
-            }
-            const dateOptions = {
+        
+        console.log(locationData);
+        city.innerHTML = locationData.name + " , " + locationData.sys.country;
+        weatherIcon.style.background = `url(https://openweathermap.org/img/wn/${locationData.weather[0].icon}@2x.png)`;
+        
+        // Fetch weather data
+        const weatherResponse = await fetch(WEATHER_DATA + `lon=${locationData.coord.lon}&lat=${locationData.coord.lat}`);
+        const weatherData = await weatherResponse.json();
+        const weatherDetail = document.querySelector(".weather-detail");
+        weatherDetail.classList.remove('d-none')
+        console.log(weatherData);
+        temperature.innerHTML = weatherData.current.temp;
+        whatfeels.innerHTML = "Feels Like " + weatherData.current.feels_like;
+        description.innerHTML = `<i class="fa-brands fa-cloudversify"></i>` + weatherData.current.weather[0].description;
+        date.innerHTML = new Date().toDateString();
+        humValue.innerHTML = Math.round(weatherData.current.humidity) + "<span>%</span>";
+        windValue.innerHTML = weatherData.current.wind_speed + "<span>m/s</span>";
+        
+        const optionSR = {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true
+        };
+        
+        const dateOptions = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour12: true
+        };
+        
+        date.innerHTML = getFormateTime(weatherData.current.dt, weatherData.timezone_offset, dateOptions);
+        sunRValue.innerHTML = getFormateTime(weatherData.current.sunrise, weatherData.timezone_offset, optionSR);
+        sunSValue.innerHTML = getFormateTime(weatherData.current.sunset, weatherData.timezone_offset, optionSR);
+        cloudValue.innerHTML = Math.round(weatherData.current.clouds) + "<span>%</span>";
+        uvValue.innerHTML = weatherData.current.uvi;
+        preValue.innerHTML = Math.round(weatherData.current.pressure) + "<span>hpa</span>";
+        
+       
+        weatherData.daily.forEach(items => {
+            const itemsDate = {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
-                day: "numeric",
-                hour12:true
-            }
-            date.innerHTML = getFormateTime(data.current.dt, data.timezone_offset, dateOptions);
-            sunRValue.innerHTML = getFormateTime(data.current.sunrise, data.timezone_offset, optionSR);
-            sunSValue.innerHTML = getFormateTime(data.current.sunset, data.timezone_offset, optionSR);
-            cloudValue.innerHTML = Math.round(data.current.clouds) + "<span>%</span>";
-            uvValue.innerHTML = data.current.uvi;
-            preValue.innerHTML = Math.round(data.current.pressure) + "<span>hpa</span>";
-            data.daily.forEach(items => {
-                const itemsDate = {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                
-                }
-                let div = document.createElement("div");
-                let dailyWeather = getFormateTime(items.dt, 0, itemsDate).split(" at ");
-                div.innerHTML = dailyWeather[0]
-                div.innerHTML+=`<img src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`
-                div.innerHTML+= `<p calss="forecast-desc">${items.weather[0].description} </p>`
-                forecast.appendChild(div);
-            });
-
+                day: "numeric"
+            };
             
-        })
-       
-    })
+            let div = document.createElement("div");
+            let dailyWeather = getFormateTime(items.dt, 0, itemsDate).split(" at ");
+            div.innerHTML = dailyWeather[0];
+            div.innerHTML += `<img src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`;
+            div.innerHTML += `<p class="forecast-desc">${items.weather[0].description}</p>`;
+            forecast.appendChild(div);
+        });
+        
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        alert("An error occurred while fetching weather data.");
+    }
 }
+
 
 function formateTime(dateValue, offSet, options = {}) {
     console.log('dateValue:', dateValue, 'offSet:', offSet); 
