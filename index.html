@@ -15,79 +15,135 @@
       
    
     <div class="container">
-        <div class="">
+        <div class="nav">
             <div>
-                <img src="images/logo.png" width="200"/>
+                <img src="images/logo.png" class="logo" />
             </div>
-            <div></div>
-                    </div>
-<div class="main-weather">
-    <div class="search-input-group">
+            <div class="d-flex align-items-center">
 
-        <input 
-        type="text"
-        id="searchLocation"
-        placeholder="search for weather"
-        />
-<select class="toggle" id="toggle">
-<option value="">°F</option>
-<option value="">°C</option>
-</select>
-<i class="fa fa-search" onclick="findLocation()"></i>
-    </div>
-    <div class="weatherIcon"></div>
-    <h2 class="temperature"></h2>
-    <div class="whatfeels"></div>
-    <div class="description"></div>
-
-    <hr/>
-    <div class="date"></div>
-    <div class="city"></div>
-</div>
-<div class="weather-detail d-none">
-    <h2 class="heading">Today's Highlights</h2>
-    <div class="highlight">
-        <div class="humidity">
-            Humidity
-            <i class="fa-solid fa-water"></i>
-            <h3 id="humValue"></h3>
-        </div>
-        <div class="windSpeed">
-            Wind Speed
-            <i class="fa-solid fa-wind"></i>
-            <h3 id="windValue"></h3>
-        </div>
-        <div class="sun">
-            <span>
-                <i class="fa-solid fa-sun"></i>
-                <p><span id="sunRValue"></span>Sunrise</p>
-            </span>
-            <span>
-                <i class="fa-regular fa-sun"></i>
-                <p><span id="sunSValue"></span>Sunset</p>
-            </span>
+                <div class="search-input-group ">
+                            
+                    <input type="text" id="searchLocation" placeholder="search for weather">
+            <select class="toggle" id="toggle">
+                <option value="C">°C</option>
+                <option value="F">°F</option>
             
+            </select>
+            <i class="fa fa-search" onclick="findLocation()"></i>
+                </div>
+                <div id="show-fav" class="mx-md-5 mx-2">
+                    Favorites
+                    <div id="favorites-list" class="d-none">
+                        <ul id="fav-cities"></ul>
+                    </div>
+                </div>
+            </div>
+                    </div>
+                    <div class="container bodyContent d-none mt-md-5 mt-3">
+                        <h2 class="heading text-center mb-4">Today's Highlights</h2>
+                        <div class="row align-items-center">
+                            <div class=" col-lg-4">
+                           
+                            <div class="main-weather py-lg-4">
+                                <!-- <div class="search-input-group">
+                            
+                                    <input 
+                                    type="text"
+                                    id="searchLocation"
+                                    placeholder="search for weather"
+                                    />
+                            <select class="toggle" id="toggle">
+                                <option value="C">°C</option>
+                                <option value="F">°F</option>
+                            
+                            </select>
+                            <i class="fa fa-search" onclick="findLocation()"></i>
+                                </div> -->
+                                <div class="">
+                                    <img class="weatherIcon" src=""/>
+                                </div>
+                                <h2 class="temperature d-flex justify-content-center"></h2>
+                                <div class="whatfeels"></div>
+                                <div class="description"></div>
+                            
+                                <hr/>
+                                <div class="date"></div>
+                                <div class="city"></div>
+                                <div>
+                                    <button class="btn btn-success" id="favorite">Add to favorite </button>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-lg-8">
+                               
+                                
+        <div class="highlight row">
+            <div class=" col-lg-6">
+                <div class="humidity highlight-cards">
+    
+                    Humidity
+                    <i class="fa-solid fa-water"></i>
+                    <h3 id="humValue"></h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+    
+                <div class="windSpeed highlight-cards">
+                    Wind Speed
+                    <i class="fa-solid fa-wind"></i>
+                    <h3 id="windValue"></h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+            <div class="sun highlight-cards">
+                <span>
+                    <i class="fa-solid fa-sun"></i>
+                    <p><span id="sunRValue"></span>Sunrise</p>
+                </span>
+                <span>
+                    <i class="fa-regular fa-sun"></i>
+                    <p><span id="sunSValue"></span>Sunset</p>
+                </span>
+                
+            </div>
+            </div>
+            <div class="col-lg-6">
+            <div class="clouds highlight-cards">
+                Clouds
+                <i class="fa-solid fa-cloud"></i>
+                <h3 id="cloudValue"></h3>
+            </div>
+            </div>
+            <div class="col-lg-6">
+            <div class="uv-index highlight-cards">
+                UV Index
+                <i class="fa-solid fa-bacon"></i>
+                <h3 id="uvValue"></h3>
+            </div>
+            </div>
+            <div class="col-lg-6">
+            <div class="pressure highlight-cards">
+                Pressure
+                <i class="fa-solid fa-volcano"></i>
+                <h3 id="preValue"></h3>
+            </div>
+            </div>
         </div>
-        <div class="clouds">
-            Clouds
-            <i class="fa-solid fa-cloud"></i>
-            <h3 id="cloudValue"></h3>
-        </div>
-        <div class="uv-index">
-            UV Index
-            <i class="fa-solid fa-bacon"></i>
-            <h3 id="uvValue"></h3>
-        </div>
-        <div class="pressure">
-            Pressure
-            <i class="fa-solid fa-volcano"></i>
-            <h3 id="preValue"></h3>
+                            </div>
+                        </div>
+    
+    <div class="weather-detail ">
+        
+        <h2 class="heading text-center my-4">This week</h2>
+        <div class="">
+            <div class="forecast row"></div>
+    
         </div>
     </div>
-    <h2 class="heading">This week</h2>
-    <div class="forecast"></div>
-</div>
-    </div>
+        </div>
+
+                    </div>
+     
     <script src="script.js">
 
     </script>

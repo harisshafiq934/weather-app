@@ -28,7 +28,12 @@ const searchLocation = document.getElementById("searchLocation"),
 //     updateData();
 
 // }
-
+const favoriteButton = document.getElementById("favorite");
+const showFav = document.getElementById("show-fav");
+const favoritesList = document.getElementById("favorites-list");
+const favCities = document.getElementById("fav-cities");
+favoriteButton.addEventListener("click", addtoFavorite);
+showFav.addEventListener("click", showFavorites);
 async function findLocation() {
     forecast.innerHTML = "";
     
@@ -42,17 +47,18 @@ async function findLocation() {
             return;
         }
         
-        console.log(locationData);
+        // console.log(locationData);
         city.innerHTML = locationData.name + " , " + locationData.sys.country;
-        weatherIcon.style.background = `url(https://openweathermap.org/img/wn/${locationData.weather[0].icon}@2x.png)`;
+        // weatherIcon.style.background = `url(https://openweathermap.org/img/wn/${locationData.weather[0].icon}@2x.png)`;
+        weatherIcon.src = `https://openweathermap.org/img/wn/${locationData.weather[0].icon}@2x.png`;
         
         // Fetch weather data
         const weatherResponse = await fetch(WEATHER_DATA + `lon=${locationData.coord.lon}&lat=${locationData.coord.lat}`);
         const weatherData = await weatherResponse.json();
-        const weatherDetail = document.querySelector(".weather-detail");
+        const weatherDetail = document.querySelector(".bodyContent");
         weatherDetail.classList.remove('d-none')
-        console.log(weatherData);
-        temperature.innerHTML = weatherData.current.temp;
+        // console.log(weatherData);
+        temperature.innerHTML = tempCoverter(weatherData.current.temp);
         whatfeels.innerHTML = "Feels Like " + weatherData.current.feels_like;
         description.innerHTML = `<i class="fa-brands fa-cloudversify"></i>` + weatherData.current.weather[0].description;
         date.innerHTML = new Date().toDateString();
@@ -90,11 +96,16 @@ async function findLocation() {
             };
             
             let div = document.createElement("div");
+            div.classList.add("col-lg-3");
+            let div2 = document.createElement("div");
+            div2.classList.add("forecast-item", "mt-4", "p-3");
             let dailyWeather = getFormateTime(items.dt, 0, itemsDate).split(" at ");
-            div.innerHTML = dailyWeather[0];
-            div.innerHTML += `<img src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`;
-            div.innerHTML += `<p class="forecast-desc">${items.weather[0].description}</p>`;
+            div2.innerHTML = dailyWeather[0];
+            div2.innerHTML += `<img class="d-flex mx-autok" src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`;
+            div2.innerHTML += `<p class="forecast-desc">${items.weather[0].description}</p>`;
+            div2.innerHTML += `<span><span>${tempCoverter(items.temp.min)}</span>&nbsp &nbsp<span>${tempCoverter(items.temp.max)}</span></span>`;
             forecast.appendChild(div);
+            div.appendChild(div2);
         });
         
     } catch (error) {
@@ -105,9 +116,9 @@ async function findLocation() {
 
 
 function formateTime(dateValue, offSet, options = {}) {
-    console.log('dateValue:', dateValue, 'offSet:', offSet); 
+    // console.log('dateValue:', dateValue, 'offSet:', offSet); 
     const date = new Date((dateValue + offSet) * 1000);
-    console.log('Calculated Date:', date); 
+    // console.log('Calculated Date:', date); 
     return date.toLocaleTimeString([], { timeZone: "UTC", ...options });
 }
 
@@ -115,4 +126,50 @@ function formateTime(dateValue, offSet, options = {}) {
 
 function getFormateTime(dateValue, offSet, options) {
     return formateTime(dateValue, offSet, options);
+}
+
+
+function tempCoverter(temp){
+    let tempValue = Math.round(temp);
+    let message = '';
+    if (toggle.value === 'C') {
+        message = tempValue + "<span>" + "\xB0C</span>";
+    } else if (toggle.value === 'F') {
+        let fahrenheit = (tempValue * 9)/5 + 32;
+        message = Math.round(fahrenheit) + "<span>" + "\xB0F</span>";
+    }
+    return message;
+}
+
+function addtoFavorite(){
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+const cityName = city.innerText;
+if(!favorites.includes(cityName)){
+    favorites.push(cityName);
+    localStorage.setItem('favorites',JSON.stringify(favorites));
+    alert(`${cityName} has been added to your favorites.`);
+}else{
+    alert(`${cityName} is already in your favorites.`);
+}
+}
+
+
+function showFavorites() {
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    
+    favCities.innerHTML = "";
+    
+    favorites.forEach((cityName) => {
+        const cityItem = document.createElement("li");
+        cityItem.innerText = cityName;
+        cityItem.classList.add("favorite-city");
+        cityItem.addEventListener("click", () => {
+            searchLocation.value = cityName.split(' , ')[0];
+            findLocation();
+            favoritesList.classList.add("d-none");
+        });
+        favCities.appendChild(cityItem);
+    });
+    
+    favoritesList.classList.toggle("d-none");
 }

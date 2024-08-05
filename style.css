@@ -10,30 +10,47 @@ body{
 
 }
 
-.container{
+/* .container{
     display: flex;
     align-items: center;
-}
+} */
 
-.main-weather{
+/* .main-weather{
     width: 25%;
     position: fixed;
     inset: 0;
     background: rgb(182, 197, 239);
     padding: 1rem 2.5rem ;
 
+} */
+
+.main-weather{
+    background: rgb(182, 197, 239);
+
 }
-.weatherIcon{
+/* .weatherIcon{
 background-position: 50% !important;
 background-repeat: no-repeat !important;
-background-size: contain;
+background-size: contain ;
 display: block;
 height: 25%;
 margin: 2rem auto;
 
 
-}
+} */
 
+#fav-cities{
+    list-style: none;
+    padding-left: 0px;
+}
+.logo{
+    width: 150px;
+}
+.nav{
+    background-color: rgb(182, 197, 239);
+    margin-top: 20px;
+    border-radius: 15px;
+}
 .search-input-group{
 position: relative;
 display: flex;
@@ -68,7 +85,7 @@ cursor: pointer;
     font-size: 22px;
 }
 
-.weather-detail{
+/* .weather-detail{
     width: 75%;
     position: fixed;
     inset: 0;
@@ -76,8 +93,13 @@ cursor: pointer;
     padding: 2rem;
     background:#f6f6f6 ;
     overflow: auto;
-}
+} */
+.main-weather{
+border-radius: 20px;
+text-align: center;
 
+
+}
 .main-weather .whatfeels,
 .main-weather .description,
 .main-weather .date,
@@ -91,7 +113,7 @@ cursor: pointer;
     font-weight: 300;
 }
 
-.highlight{
+/* .highlight{
 display: grid;
 grid-template-columns: repeat(3, 350px);
 grid-auto-flow: row;
@@ -99,21 +121,21 @@ row-gap: 1rem;
 column-gap: 10px;
 
 
-}
+} */
 
-.forecast{
+/* .forecast{
     display: grid;
     grid-template-columns: repeat(4, 260px);
     grid-auto-flow: row;
     row-gap: 1rem;
     column-gap: 10px;
-}
+} */
 
 
-.highlight div,
-.forecast div
+.highlight .highlight-cards,
+.forecast .forecast-item
 {
-    height: 200px;
+    /* height: 200px; */
     display: grid;
     align-items: center;
     justify-content: center;
@@ -121,6 +143,7 @@ column-gap: 10px;
     background-color: rgb(182, 197, 239);
     border-radius: 20px;
     padding: 1rem;
+    margin-top: 10px;
 }
 .highlight i{
     font-size: 45px;
