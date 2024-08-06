@@ -1,3 +1,5 @@
+const skeletonLoader = document.getElementById("skeletonLoader");
+
 const searchLocation = document.getElementById("searchLocation"),
  toggle = document.getElementById("toggle"),
  weatherIcon = document.querySelector(".weatherIcon"),
@@ -36,7 +38,9 @@ favoriteButton.addEventListener("click", addtoFavorite);
 showFav.addEventListener("click", showFavorites);
 async function findLocation() {
     forecast.innerHTML = "";
-    
+    skeletonLoader.classList.remove('d-none');
+    const weatherDetail = document.querySelector(".bodyContent");
+    weatherDetail.classList.add('d-none');
     try {
         // Fetch location data
         const locationResponse = await fetch(WEATHER_API + searchLocation.value);
@@ -44,6 +48,7 @@ async function findLocation() {
         
         if (locationData.cod !== "" && locationData.cod !== 200) {
             alert(locationData.message);
+            skeletonLoader.classList.add('d-none');
             return;
         }
         
@@ -55,8 +60,10 @@ async function findLocation() {
         // Fetch weather data
         const weatherResponse = await fetch(WEATHER_DATA + `lon=${locationData.coord.lon}&lat=${locationData.coord.lat}`);
         const weatherData = await weatherResponse.json();
-        const weatherDetail = document.querySelector(".bodyContent");
-        weatherDetail.classList.remove('d-none')
+        skeletonLoader.classList.add('d-none');
+        weatherDetail.classList.remove('d-none');
+        // const weatherDetail = document.querySelector(".bodyContent");
+        // weatherDetail.classList.remove('d-none')
         // console.log(weatherData);
         temperature.innerHTML = tempCoverter(weatherData.current.temp);
         whatfeels.innerHTML = "Feels Like " + weatherData.current.feels_like;
@@ -101,7 +108,7 @@ async function findLocation() {
             div2.classList.add("forecast-item", "mt-4", "p-3");
             let dailyWeather = getFormateTime(items.dt, 0, itemsDate).split(" at ");
             div2.innerHTML = dailyWeather[0];
-            div2.innerHTML += `<img class="d-flex mx-autok" src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`;
+            div2.innerHTML += `<img class="d-flex mx-auto" src="https://openweathermap.org/img/wn/${items.weather[0].icon}@2x.png" />`;
             div2.innerHTML += `<p class="forecast-desc">${items.weather[0].description}</p>`;
             div2.innerHTML += `<span><span>${tempCoverter(items.temp.min)}</span>&nbsp &nbsp<span>${tempCoverter(items.temp.max)}</span></span>`;
             forecast.appendChild(div);
@@ -111,6 +118,7 @@ async function findLocation() {
     } catch (error) {
         console.error("Error fetching weather data:", error);
         alert("An error occurred while fetching weather data.");
+        skeletonLoader.classList.add('d-none');
     }
 }
 
@@ -151,25 +159,30 @@ if(!favorites.includes(cityName)){
 }else{
     alert(`${cityName} is already in your favorites.`);
 }
+showFav();
 }
 
 
 function showFavorites() {
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     
-    favCities.innerHTML = "";
+    favoritesList.innerHTML = "";
     
     favorites.forEach((cityName) => {
         const cityItem = document.createElement("li");
         cityItem.innerText = cityName;
-        cityItem.classList.add("favorite-city");
+        cityItem.classList.add("dropdown-item");
         cityItem.addEventListener("click", () => {
             searchLocation.value = cityName.split(' , ')[0];
             findLocation();
-            favoritesList.classList.add("d-none");
+            
         });
-        favCities.appendChild(cityItem);
+        favoritesList.appendChild(cityItem);
     });
     
-    favoritesList.classList.toggle("d-none");
+   
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    showFavorites();
+});

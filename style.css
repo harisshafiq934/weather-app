@@ -161,3 +161,73 @@ column-gap: 10px;
     align-items: center;
     padding: 10px 0;
 }
+
+.skeleton-loader {
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f2f2f2;
+}
+
+.skeleton-loader .col-lg-4 {
+    background: #e0e0e0;
+    height: 400px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    animation: shimmer 1s linear infinite;
+}
+.skeleton-loader .div-2 {
+    background: #e0e0e0;
+    height: 200px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    animation: shimmer 1s linear infinite;
+}
+.skeleton-heading {
+    width: 50%;
+    height: 30px;
+}
+
+.skeleton-weather-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px auto;
+    background: #d0d0d0;
+}
+
+.skeleton-temperature {
+    width: 60%;
+    height: 40px;
+    margin: 0 auto 20px auto;
+}
+
+.skeleton-description {
+    width: 80%;
+    height: 25px;
+    margin: 0 auto 10px auto;
+}
+
+.skeleton-details {
+    width: 100%;
+    height: 20px;
+    margin: 10px 0;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -150%;
+    }
+    100% {
+        background-position: 150%;
+    }
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+@media screen and (max-width: 576px){
+
+    .logo{
+        width: 80px;
+    }
+}
